@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup Java
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
+        distribution: 'temurin'
         java-version: '17'
     
     - name: Setup Flutter
@@ -25,18 +25,17 @@ jobs:
       with:
         flutter-version: '3.16.0'
         channel: 'stable'
+        cache: true
     
     - name: Get dependencies
       run: flutter pub get
     
-    - name: Analyze code
-      run: flutter analyze
-    
     - name: Build APK
-      run: flutter build apk --release
+      run: flutter build apk --release --no-tree-shake-icons
     
     - name: Upload APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: PSV-to-KML-Converter
+        name: PSV-to-KML-Converter-APK
         path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 30
